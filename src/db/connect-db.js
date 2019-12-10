@@ -3,11 +3,11 @@ import { config } from '../config/config'
 import log4js from 'log4js';
 
 const logger = log4js.getLogger('mongoose');
-const dbUrl = `${config.dbUrl}:${config.dbPort}`;
+const dbUrl = `${config.dbUrl}:${config.dbPort}/${config.dbName}`;
 
 async function connectDb() {
   if (mongoose.connection.readyState === mongoose.STATES.disconnected) {
-    await mongoose.connect(dbUrl, { useUnifiedTopology: true, useNewUrlParser: true });
+    await mongoose.connect(dbUrl, { useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true, bufferCommands: false });
   }
   return mongoose;
 }
