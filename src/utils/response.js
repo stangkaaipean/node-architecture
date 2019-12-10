@@ -1,3 +1,3 @@
-export function messageResponse(data, message) {
+export function createMessageResponse(data, message) {
   return { responses: { data: data, message: message} }
 }
