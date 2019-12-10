@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
 import { config } from '../config/config'
+import log4js from 'log4js';
 
+const logger = log4js.getLogger('mongoose');
 const dbUrl = `${config.dbUrl}:${config.dbPort}`;
 
 async function connectDb() {
@@ -11,15 +13,15 @@ async function connectDb() {
 }
 
 mongoose.connection.on('connected', () => {
-  console.log(`Mongoose connected to: ${dbUrl}`)
+  logger.info(`Mongoose connected to: ${dbUrl}`)
 });
 
 mongoose.connection.once('error', (err) => {
-  console.log(`Mongoose default connection error: ${err}`);
+  logger.error(`Mongoose default connection error: ${err}`);
 });
 
 mongoose.connection.on('disconnected', () => {
-  console.log(`Mongoose disconnected to: ${dbUrl}`)
+  logger.info(`Mongoose disconnected to: ${dbUrl}`)
 });
 
 export { connectDb };
