@@ -1,13 +1,16 @@
 import mongoose from 'mongoose';
 import { connectDb } from '../../db/connect-db';
 
-const users = new mongoose.Schema({
+const UsersSchema = new mongoose.Schema({
   username: {
     type: String,
     required: true,
     unique: true
   },
-  password: String,
+  password: {
+    type: String,
+    required: true
+  },
   image: String,
   gender: {
     type: String,
@@ -37,7 +40,14 @@ const users = new mongoose.Schema({
   },
 }, { timestamps: true });
 
-const Users = mongoose.model('Users', users);
+UsersSchema.set('toJSON', {
+  transform: (doc, ret, opt) => {
+    delete ret['password']
+    return ret;
+  }
+})
+
+const Users = mongoose.model('Users', UsersSchema);
 
 export async function create(user) {
   await connectDb();
