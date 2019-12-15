@@ -17,7 +17,10 @@ export function makeCreateUser(UserModel) {
         return;
       }
       
-      return await UserModel.create(user);
+      const userDoc = await UserModel.create(user);
+      const userObject = userDoc.toObject();
+      delete userObject.password;
+      return userObject;
 
     } catch (err) {
       throw err;

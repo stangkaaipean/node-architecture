@@ -44,7 +44,7 @@ const Users = mongoose.model('Users', UsersSchema);
 
 export async function create(user) {
   await connectDb();
-  return Users.create(user, { password: 0 });
+  return await Users.create(user);
 }
 
 export async function isUsernameInUse(username) {
@@ -65,5 +65,5 @@ export async function isUserExists(username, email) {
 }
 
 export async function findUserByUsernameOrEmail(id) {
-  return Users.findOne().or([{username: id}, {email: id}]).exec();
+  return Users.findOne().or([{ username: id }, { email: id }]).exec();
 }
