@@ -1,5 +1,5 @@
 import log4js from 'log4js';
-import { config } from '../config/config'
+import { config } from './config'
 const dateTime = new Date().toLocaleDateString();
 (() => {
   log4js.configure({

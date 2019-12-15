@@ -1,12 +1,12 @@
 import express from 'express'
 import { config } from './config/config';
-import { usersRouter } from './users/routes';
-import './log'
+import { usersRouter } from './users/users.routes';
+import './config/log.config'
 import { connectDb } from './db/connect-db';
 import cors from 'cors';
 import { HealthChecker, LivenessEndpoint, ReadinessEndpoint} from '@cloudnative/health-connect';
 import log4js from 'log4js';
-import { authenticationRouter } from './authentication/authentication.routes';
+import { authRouter } from './authentication/auth.routes';
 
 (async () => {
 
@@ -17,7 +17,7 @@ import { authenticationRouter } from './authentication/authentication.routes';
 
   app.use(cors());
   app.use(express.json());
-  app.use('/', authenticationRouter);
+  app.use('/', authRouter);
   app.use('/users', usersRouter);
   app.use('/live', LivenessEndpoint(healthChecker));
   app.use('/ready', ReadinessEndpoint(healthChecker));

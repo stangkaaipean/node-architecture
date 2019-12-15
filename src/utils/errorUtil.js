@@ -1,4 +1,4 @@
-export function createErrorResponse(reason) {
+export function createErrorResponse(code , reason) {
   // TODO will define err code later.
-  return { errors: { code: undefined, message: reason } };
+  return { errors: { code: code, message: reason } };
 }
