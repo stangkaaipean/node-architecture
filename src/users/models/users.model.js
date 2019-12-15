@@ -40,18 +40,11 @@ const UsersSchema = new mongoose.Schema({
   },
 }, { timestamps: true });
 
-UsersSchema.set('toJSON', {
-  transform: (doc, ret, opt) => {
-    delete ret['password']
-    return ret;
-  }
-})
-
 const Users = mongoose.model('Users', UsersSchema);
 
 export async function create(user) {
   await connectDb();
-  return Users.create(user);
+  return Users.create(user, { password: 0 });
 }
 
 export async function isUsernameInUse(username) {
@@ -69,4 +62,8 @@ export async function isUserExists(username, email) {
   const isUsrnameInUse = await isUsernameInUse(username);
   const isEmilInUse = await isEmailInUse(email);
   return (isUsrnameInUse || isEmilInUse);
-} 
+}
+
+export async function findUserByUsernameOrEmail(id) {
+  return Users.findOne().or([{username: id}, {email: id}]).exec();
+}

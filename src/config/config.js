@@ -10,5 +10,7 @@ export const config = {
   dbName: process.env.DB_NAME,
   algo: process.env.ALGO || 'sha1',
   iterations: process.env.ITERATIONS || 1,
-  saltLength: process.env.SALT_LENGTH || 8 
+  saltLength: process.env.SALT_LENGTH || 8 ,
+  secret: process.env.SECRET,
+  expireIn: process.env.EXPIRE_IN
 }

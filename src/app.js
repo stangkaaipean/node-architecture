@@ -6,6 +6,7 @@ import { connectDb } from './db/connect-db';
 import cors from 'cors';
 import { HealthChecker, LivenessEndpoint, ReadinessEndpoint} from '@cloudnative/health-connect';
 import log4js from 'log4js';
+import { authenticationRouter } from './authentication/authentication.routes';
 
 (async () => {
 
@@ -16,6 +17,7 @@ import log4js from 'log4js';
 
   app.use(cors());
   app.use(express.json());
+  app.use('/', authenticationRouter);
   app.use('/users', usersRouter);
   app.use('/live', LivenessEndpoint(healthChecker));
   app.use('/ready', ReadinessEndpoint(healthChecker));

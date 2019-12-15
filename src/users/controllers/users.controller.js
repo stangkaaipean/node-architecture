@@ -1,5 +1,5 @@
 import log4js from 'log4js';
-import { createErrorResponse } from '../../utils/error';
+import { createErrorResponse } from '../../utils/errorUtil';
 const logger = log4js.getLogger('users-use-cases');
 
 export function validateCreateUserBody(req, res, next) {

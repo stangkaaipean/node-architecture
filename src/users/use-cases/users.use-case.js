@@ -1,5 +1,5 @@
 import log4js from 'log4js';
-import { createMessageResponse } from '../../utils/response';
+import { createMessageResponse } from '../../utils/responseUtil';
 const logger = log4js.getLogger('users-use-cases');
 import passwordHash from 'password-hash';
 import { config } from '../../config/config'
