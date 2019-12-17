@@ -1,13 +1,16 @@
 import mongoose from 'mongoose';
 import { connectDb } from '../../db/connect-db';
 
-const users = new mongoose.Schema({
+const UsersSchema = new mongoose.Schema({
   username: {
     type: String,
     required: true,
     unique: true
   },
-  password: String,
+  password: {
+    type: String,
+    required: true
+  },
   image: String,
   gender: {
     type: String,
@@ -37,11 +40,11 @@ const users = new mongoose.Schema({
   },
 }, { timestamps: true });
 
-const Users = mongoose.model('Users', users);
+const Users = mongoose.model('Users', UsersSchema);
 
 export async function create(user) {
   await connectDb();
-  return Users.create(user);
+  return await Users.create(user);
 }
 
 export async function isUsernameInUse(username) {
@@ -59,4 +62,8 @@ export async function isUserExists(username, email) {
   const isUsrnameInUse = await isUsernameInUse(username);
   const isEmilInUse = await isEmailInUse(email);
   return (isUsrnameInUse || isEmilInUse);
-} 
+}
+
+export async function findUserByUsernameOrEmail(id) {
+  return Users.findOne().or([{ username: id }, { email: id }]).exec();
+}

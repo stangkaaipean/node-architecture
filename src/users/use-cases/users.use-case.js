@@ -1,29 +1,34 @@
 import log4js from 'log4js';
-import { createErrorResponse } from '../../utils/error';
-import { createMessageResponse } from '../../utils/response';
 const logger = log4js.getLogger('users-use-cases');
+import passwordHash from 'password-hash';
+import { config } from '../../config/config'
+import * as UserModel from '../models/users.model'
 
 export function makeCreateUser(UserModel) {
   return async function createUser(user) {
-    // business logic
-    let result;
     try {
 
+      const hashPassword = passwordHash.generate(user.password, { algorithm: config.algo, iterations: config.iterations, saltLength: config.saltLength });
+      user.password = hashPassword;
+
       const isExists = await UserModel.isUserExists(user.username, user.email);
-      
+
       if (isExists) {
-        result = createMessageResponse(undefined, 'The user already exists.');
-      } else {
-        await UserModel.create(user).then((res) => {
-          result = createMessageResponse(res, 'Created the new user sucessfully.');
-        });
+        return;
       }
+      
+      const userDoc = await UserModel.create(user);
+      const userObject = userDoc.toObject();
+      delete userObject.password;
+      return userObject;
 
     } catch (err) {
       throw err;
     }
-
-    // business logic
-    return result;
   }
 }
+
+
+const createUser = makeCreateUser(UserModel);
+
+export { createUser };
